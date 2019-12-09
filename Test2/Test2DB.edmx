@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Test2DB.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Test2DBStoreContainer">
+    <EntitySet Name="Questions" EntityType="Test2DB.Store.Questions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Answers" EntityType="Test2DB.Store.Answers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Tests" EntityType="Test2DB.Store.Tests" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TestStatistics" EntityType="Test2DB.Store.TestStatistics" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="QuestionAnswer" Association="Test2DB.Store.QuestionAnswer">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="Answer" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="TestQuestion" Association="Test2DB.Store.TestQuestion">
+      <End Role="Test" EntitySet="Tests" />
+      <End Role="Question" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="TestTestStatistic" Association="Test2DB.Store.TestTestStatistic">
+      <End Role="Test" EntitySet="Tests" />
+      <End Role="TestStatistic" EntitySet="TestStatistics" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Questions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="QuestionText" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Test_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Answers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AnswerText" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsCorrect" Type="bit" Nullable="false" />
+    <Property Name="Question_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Tests">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MinutesForTest" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TestStatistics">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TimeInMinutes" Type="int" Nullable="false" />
+    <Property Name="NumberOfCorrect" Type="int" Nullable="false" />
+    <Property Name="PercentOfCorrect" Type="decimal" Nullable="false" />
+    <Property Name="Test_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="QuestionAnswer">
+    <End Role="Question" Type="Test2DB.Store.Questions" Multiplicity="1" />
+    <End Role="Answer" Type="Test2DB.Store.Answers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Answer">
+        <PropertyRef Name="Question_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TestQuestion">
+    <End Role="Test" Type="Test2DB.Store.Tests" Multiplicity="1" />
+    <End Role="Question" Type="Test2DB.Store.Questions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Question">
+        <PropertyRef Name="Test_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TestTestStatistic">
+    <End Role="Test" Type="Test2DB.Store.Tests" Multiplicity="1" />
+    <End Role="TestStatistic" Type="Test2DB.Store.TestStatistics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TestStatistic">
+        <PropertyRef Name="Test_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Test2DB" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Test2DBContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Questions" EntityType="Test2DB.Question" />
+          <EntitySet Name="Answers" EntityType="Test2DB.Answer" />
+          <AssociationSet Name="QuestionAnswer" Association="Test2DB.QuestionAnswer">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <EntitySet Name="Tests" EntityType="Test2DB.Test" />
+          <AssociationSet Name="TestQuestion" Association="Test2DB.TestQuestion">
+            <End Role="Test" EntitySet="Tests" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <EntitySet Name="TestStatistics" EntityType="Test2DB.TestStatistic" />
+          <AssociationSet Name="TestTestStatistic" Association="Test2DB.TestTestStatistic">
+            <End Role="Test" EntitySet="Tests" />
+            <End Role="TestStatistic" EntitySet="TestStatistics" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionText" Type="String" Nullable="false" />
+          <NavigationProperty Name="Answers" Relationship="Test2DB.QuestionAnswer" FromRole="Question" ToRole="Answer" />
+          <NavigationProperty Name="Test" Relationship="Test2DB.TestQuestion" FromRole="Question" ToRole="Test" />
+        </EntityType>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnswerText" Type="String" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Test2DB.QuestionAnswer" FromRole="Answer" ToRole="Question" />
+          <Property Name="IsCorrect" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="QuestionAnswer">
+          <End Type="Test2DB.Question" Role="Question" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Test2DB.Answer" Role="Answer" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="MinutesForTest" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Questions" Relationship="Test2DB.TestQuestion" FromRole="Test" ToRole="Question" />
+          <NavigationProperty Name="TestStatistics" Relationship="Test2DB.TestTestStatistic" FromRole="Test" ToRole="TestStatistic" />
+        </EntityType>
+        <Association Name="TestQuestion">
+          <End Type="Test2DB.Test" Role="Test" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Test2DB.Question" Role="Question" Multiplicity="*" />
+        </Association>
+        <EntityType Name="TestStatistic">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimeInMinutes" Type="Int32" Nullable="false" />
+          <Property Name="NumberOfCorrect" Type="Int32" Nullable="false" />
+          <Property Name="PercentOfCorrect" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="Test" Relationship="Test2DB.TestTestStatistic" FromRole="TestStatistic" ToRole="Test" />
+        </EntityType>
+        <Association Name="TestTestStatistic">
+          <End Type="Test2DB.Test" Role="Test" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Test2DB.TestStatistic" Role="TestStatistic" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Test2DBStoreContainer" CdmEntityContainer="Test2DBContainer">
+    <EntitySetMapping Name="Questions">
+      <EntityTypeMapping TypeName="IsTypeOf(Test2DB.Question)">
+        <MappingFragment StoreEntitySet="Questions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Answers">
+      <EntityTypeMapping TypeName="IsTypeOf(Test2DB.Answer)">
+        <MappingFragment StoreEntitySet="Answers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AnswerText" ColumnName="AnswerText" />
+          <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tests">
+      <EntityTypeMapping TypeName="IsTypeOf(Test2DB.Test)">
+        <MappingFragment StoreEntitySet="Tests">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="MinutesForTest" ColumnName="MinutesForTest" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TestStatistics">
+      <EntityTypeMapping TypeName="IsTypeOf(Test2DB.TestStatistic)">
+        <MappingFragment StoreEntitySet="TestStatistics">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TimeInMinutes" ColumnName="TimeInMinutes" />
+          <ScalarProperty Name="NumberOfCorrect" ColumnName="NumberOfCorrect" />
+          <ScalarProperty Name="PercentOfCorrect" ColumnName="PercentOfCorrect" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="QuestionAnswer" TypeName="Test2DB.QuestionAnswer" StoreEntitySet="Answers">
+      <EndProperty Name="Question">
+        <ScalarProperty Name="Id" ColumnName="Question_Id" />
+      </EndProperty>
+      <EndProperty Name="Answer">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TestQuestion" TypeName="Test2DB.TestQuestion" StoreEntitySet="Questions">
+      <EndProperty Name="Test">
+        <ScalarProperty Name="Id" ColumnName="Test_Id" />
+      </EndProperty>
+      <EndProperty Name="Question">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TestTestStatistic" TypeName="Test2DB.TestTestStatistic" StoreEntitySet="TestStatistics">
+      <EndProperty Name="Test">
+        <ScalarProperty Name="Id" ColumnName="Test_Id" />
+      </EndProperty>
+      <EndProperty Name="TestStatistic">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a303f43bae684904b124075f51100fb6" Name="Diagram1">
+        <EntityTypeShape EntityType="Test2DB.Question" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Test2DB.Answer" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Test2DB.Test" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Test2DB.TestStatistic" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="Test2DB.QuestionAnswer" ManuallyRouted="false" />
+        <AssociationConnector Association="Test2DB.TestQuestion" ManuallyRouted="false" />
+        <AssociationConnector Association="Test2DB.TestTestStatistic" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
